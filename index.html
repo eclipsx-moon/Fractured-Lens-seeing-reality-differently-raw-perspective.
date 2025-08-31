@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Navi Bulletin</title>
+  <meta name="description" content="A beautiful, responsive single‑file website for presenting Navi's life story in stages, with ticker quotes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --panel: #11151b;
+      --ink: #e9eef5;
+      --muted: #a9b3c3;
+      --pri: #7c3aed;
+      --pri-2: #06b6d4;
+      --ring: rgba(124,58,237,.35);
+      --glass: rgba(255,255,255,.06);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius-xl: 24px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--ink);
+      background: radial-gradient(1200px 800px at 10% -10%, #1a1033 0%, transparent 50%),
+                  radial-gradient(1200px 900px at 100% 0%, #052b35 0%, transparent 55%),
+                  linear-gradient(160deg, #0a0b10 0%, #0b0d11 30%, #0c1016 100%);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1150px, 92vw); margin: 0 auto; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(10,12,16,0.9), rgba(10,12,16,0.55) 60%, rgba(10,12,16,0));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
+    .brand { display:flex; align-items:center; gap: 12px; font-weight: 800; letter-spacing: .3px; }
+    .logo { width: 36px; height: 36px; border-radius: 12px; background: conic-gradient(from 200deg, var(--pri), var(--pri-2)); box-shadow: 0 8px 20px rgba(124,58,237,.45); }
+    .nav a.link { opacity: .85; margin-left: 18px; padding: 10px 14px; border-radius: 12px; transition: .25s;
+      border: 1px solid transparent; }
+    .nav a.link:hover { border-color: rgba(255,255,255,.08); background: rgba(255,255,255,.04); }
+    .btn {
+      display:inline-flex; align-items:center; gap:10px; padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03)); box-shadow: var(--shadow); cursor: pointer; transition: .25s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0,0,0,.45); }
+
+    /* Hero */
+    .hero { padding: clamp(56px, 8vw, 96px) 0 40px; position: relative; }
+    .hero-grid { display:grid; grid-template-columns: 1.2fr 1fr; gap: 36px; align-items: center; }
+    .eyebrow { letter-spacing: .2em; text-transform: uppercase; font-size: 12px; color: var(--muted); opacity: .9; }
+    h1 { font-family: "Playfair Display", serif; font-size: clamp(34px, 5.8vw, 64px); line-height: 1.05; margin: 10px 0 18px; }
+    .lead { font-size: clamp(16px, 2.2vw, 20px); color: #cfd6e4; opacity: .95; }
+    .pill {
+      display:inline-flex; align-items:center; gap:10px; padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.1);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); font-size: 13px; color:#dfe6f3;
+    }
+
+    .glass {
+      background: var(--glass); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius-xl); box-shadow: var(--shadow);
+    }
+
+    .hero-card { padding: 20px; display:grid; gap: 16px; }
+    .hero-quote { font-size: clamp(16px, 2.2vw, 18px); line-height: 1.6; }
+
+    /* Sections */
+    section { padding: 34px 0; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; margin-bottom: 16px; }
+    .title { font-size: 22px; font-weight: 700; letter-spacing: .5px; }
+    .grid { display:grid; grid-template-columns: repeat(1, 1fr); gap: 18px; }
+
+    .card { padding: 24px; border-radius: 18px; border: 1px solid rgba(255,255,255,.08); background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); box-shadow: var(--shadow);
+      display:grid; gap: 12px; }
+    .card h3 { margin: 0; font-size: 20px; }
+    .card p { margin: 0; color: #c5cedf; font-size: 15px; line-height:1.5; }
+
+    /* Ticker */
+    .ticker {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 40px 0;
+      padding: 15px 0;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    .ticker span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: ticker 30s linear infinite;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    footer { text-align: center; margin-top: 60px; padding: 20px; font-size: 0.9rem; opacity: 0.7; }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(12px); transition: .6s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>Navi <span style="font-weight:600; opacity:.8">Bulletin</span></div>
+      </div>
+      <nav>
+        <a href="#prologue" class="link">Prologue</a>
+        <a href="#stage1" class="link">Innocence</a>
+        <a href="#stage2" class="link">Breaking</a>
+        <a href="#stage3" class="link">Warrior</a>
+        <a href="#stage4" class="link">Legacy</a>
+        <a href="#epilogue" class="link">Eternal</a>
+      </nav>
+      <button class="btn" id="themeToggle" aria-label="Toggle theme">🌗 <span class="hide-sm">Theme</span></button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="pill">Live • Navi Story</div>
+          <h1>The Journey of <span style="background:linear-gradient(90deg,var(--pri),var(--pri-2)); -webkit-background-clip:text; background-clip:text; color:transparent">A Warrior</span></h1>
+          <p class="lead">Life isn’t a lullaby—it won’t wait for us to be ready. It’s the world, unfiltered and moving forward, with or without us. That’s why we pause for a moment, to hear it, to face it, and to carry it with us into today.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- Prologue -->
+      <section id="prologue" class="reveal">
+        <div class="section-head">
+          <div class="title">🌟 Prologue: The Spark</div>
+        </div>
+        <div class="card">
+         Every story begins with a spark—sometimes soft, sometimes fierce. Navi’s began as a whisper in the wind, a small flame in a world too loud, too harsh. Even the quietest sparks can set the world alight.
+        </div>
+      </section>
+
+      <!-- Stage 1 -->
+      <section id="stage1" class="reveal">
+        <div class="section-head">
+          <div class="title">🌱 Stage One: Innocence</div>
+        </div>
+        <div class="card">
+          She wasn’t born with armor; she was born with wonder. The kind of wonder that made her believe every face carried kindness, that goodbyes were temporary, that promises never snapped. She filled rooms with laughter—laughter so unshaken it made silence jealous. Her notebooks were crowded with dreams: of places she’d go, people she’d meet, versions of herself she would grow into. She thought the world was a wide canvas, waiting for her colors. She didn’t know some canvases tear. She didn’t know some people take without returning. But in those early days, she was untouched—innocence was not her flaw, it was her rebellion. To believe in joy when the world teaches otherwise is its own kind of strength. That was her first self: whole, bright, unwritten by pain. The girl the world hadn’t yet broken, the art no one had yet cracked..
+        </div>
+      </section>
+
+      <!-- Stage 2 -->
+      <section id="stage2" class="reveal">
+        <div class="section-head">
+          <div class="title">🔥 Stage Two: The Breaking</div>
+        </div>
+        <div class="card">
+          The world does not knock before it enters. It slammed into her without warning—harsh, unkind, unapologetic. The laughter that once echoed became the very thing people mocked. Promises snapped like fragile glass. The same hands she trusted left scars that didn’t show but never healed. This was the chapter where silence replaced songs. Where the mirror stopped being a friend. Where she learned that sometimes, no matter how loud you scream, no one comes. And worse—sometimes they hear, and they still walk away. She wasn’t broken all at once; she was broken piece by piece. First her trust. Then her faith. Then her softness. Until she stood there—shattered, but still standing. The world had taken her innocence, but not her fire. Pain carved her edges sharper, her voice colder. The warrior wasn’t born—it was forced out.
+        </div>
+      </section>
+
+      <!-- Stage 3 -->
+      <section id="stage3" class="reveal">
+        <div class="section-head">
+          <div class="title">⚔️ Stage Three: The Warrior</div>
+        </div>
+        <div class="card">
+          She didn’t rise with a roar. She rose in silence. No one saw the nights she stitched herself back together, bleeding through smiles, laughing with a crack in her voice. No one saw the battles she fought inside her own mind, the ones harder than any fist or blade. She was no longer the girl waiting for someone to save her—she became the one no one could break again. The world tried to write her as fragile, but she rewrote herself in iron and fire. Her scars became her armour, her tears—her fuel. She learned to stand alone, not because she wanted to, but because she had to. And when she did, she found a power no one could take away. She wasn’t the same child of innocence. She wasn’t just a survivor. She was something more. The Warrior wasn’t born to be admired. She was born to endure. To fight. To keep walking even when the world kept pushing her down. And though the pain never left, neither did her strength.
+        </div>
+      </section>
+
+      <!-- Stage 4 -->
+      <section id="stage4" class="reveal">
+        <div class="section-head">
+          <div class="title">🌌 Stage Four: The Legacy</div>
+        </div>
+        <div class="card">
+          Legends aren’t built in comfort—they’re carved out of storms. Navi’s story didn’t end with her battles; it began again in the way she left echoes behind. Every word she spoke carried weight, even when people didn’t listen. Every step she took left a mark, even when no one noticed. She wasn’t just a girl anymore—she became a mirror for others: proof that you can be broken and still blaze. Her laughter was remembered, not because it was perfect, but because it was real. Her silence was feared, not because it was empty, but because it carried truth. She wasn’t chasing validation anymore; she was the kind of presence you couldn’t forget even if you tried. Navi became more than her scars. She became a story whispered in quiet rooms, a spark in someone else’s chest, a lesson that pain does not end you—it shapes you. And even when she was gone, she didn’t vanish. She lived in the strength of those who remembered her, in the courage of those who tried because she once dared, and in the quiet fire of every soul who carried her words forward..
+        </div>
+      </section>
+
+      <!-- Epilogue -->
+      <section id="epilogue" class="reveal">
+        <div class="section-head">
+          <div class="title">🔥 Epilogue: The Eternal Flame</div>
+        </div>
+        <div class="card">
+          Some people live and vanish. But Navi was different—she became a presence that time itself could not erase. She was the proof that even if the world breaks you, you can rise again, stronger, rawer, realer. She wasn’t made to be forgotten. She was made to be remembered in the hush between heartbeats, in the fire behind someone else’s eyes, in the courage of those who dared because she once dared first. And so, Navi’s story never truly ended. Sparks don’t die. They become eternal flames.
+        </div>
+      </section>
+
+      <!-- Ticker -->
+      <div class="ticker">
+        <span>✨ Life moves forward. The world doesn’t wait. Neither should you. — Navi ✨ She was a warrior nobody knew. ✨ From ashes to empire. ✨ Unstoppable. Untouchable. Undeniably Navi. ✨</span>
+      </div>
+
+      <!-- Closing -->
+      <section class="reveal">
+        <div class="glass" style="padding:22px; display:grid; gap:10px;">
+          <p class="lead">News ends here, but the story continues out there. Don’t just watch the world—be the one who moves it. Thank you.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container foot">
+      <div style="color:var(--muted)">© 2025 Navi Bulletin | Built raw, real & 3D</div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById('themeToggle');
+    let dark = true;
+    toggle.addEventListener('click', () => {
+      dark = !dark;
+      document.documentElement.classList.toggle('light', !dark);
+      if (!dark) {
+        document.documentElement.style.setProperty('--bg', '#f7f8fb');
+        document.documentElement.style.setProperty('--panel', '#ffffff');
+        document.documentElement.style.setProperty('--ink', '#101317');
+        document.documentElement.style.setProperty('--muted', '#5a6475');
+        document.body.style.background = 'linear-gradient(180deg,#f6f7fb,#eef1f7)';
+      } else {
+        document.documentElement.style.setProperty('--bg', '#0b0d10');
+        document.documentElement.style.setProperty('--panel', '#11151b');
+        document.documentElement.style.setProperty('--ink', '#e9eef5');
+        document.documentElement.style.setProperty('--muted', '#a9b3c3');
+        document.body.style.background = 'radial-gradient(1200px 800px at 10% -10%, #1a1033 0%, transparent 50%),\n                           radial-gradient(1200px 900px at 100% 0%, #052b35 0%, transparent 55%),\n                           linear-gradient(160deg, #0a0b10 0%, #0b0d11 30%, #0c1016 100%)';
+      }
+    });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+    }, { threshold: .12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
